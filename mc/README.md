@@ -58,3 +58,7 @@ For example, to search for all files that start with `m`, you can use the `m*` p
 ![Screenshot 9: The "Remove the file" dialog](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-34415400-1459869339.png)
 
 `F10` — exit.
+
+## Links
+[The topic on the forums](http://computercraft.ru/topic/940-)
+[Pastebin](http://pastebin.com/kE3jp6nD)
