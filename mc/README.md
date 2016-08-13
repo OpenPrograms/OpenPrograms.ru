@@ -24,6 +24,8 @@ Below, there's a command prompt, and the list of the actions that can be invoked
 
 Use arrow keys to navigate through the files, and pressing the `Tab` key moves the focus to another panel. The `Enter` key is used to run a program, or go to directory. To run a program, and pass some arguments, hold `Ctrl`, and press `Enter`. The name of program will be copied to the command prompt. Type the arguments, and press `Enter`.
 
+Also, you can press `Alt` + `Enter` to hide MC.
+
 ## Actions
 
 `F1` — show help.
