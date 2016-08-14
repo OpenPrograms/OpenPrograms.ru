@@ -13,3 +13,4 @@ Go to the programs' directories to get the docs and the information on what the 
 * `geoglasses` — a program that searches for ores and highlights them on glasses from the OpenGlasses mod.
 * `camera` — a program that can draw what the Computronics' camera sees.
 * `libthread` — an easy-to-use multithreading library.
+* `libqr` — a QR code generator library.
