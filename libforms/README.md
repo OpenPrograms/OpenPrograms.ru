@@ -1,6 +1,8 @@
 # libforms
 *A lightweight, yet powerful, GUI library.*
 
+![Screenshot of a game that uses this library](http://computercraft.ru/uploads/monthly_12_2015/post-7-0-70890400-1450255766.png)
+
 ## Developers
 * Zer0Galaxy
 
@@ -209,5 +211,5 @@ Methods of the timer:
 * `start()` — starts the timer.
 
 ## Links
-[The topic on the forums](http://computercraft.ru/topic/1016-)
-[Pastebin](http://pastebin.com/iKzRve2g)
+* [The topic on the forums](http://computercraft.ru/topic/1016-)
+* [Pastebin](http://pastebin.com/iKzRve2g)

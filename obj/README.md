@@ -50,5 +50,5 @@ Here's the result:
 ![Screenshot 3: The wolf 3D-model](https://lh3.googleusercontent.com/-0fUNmPMpD8Y/VeGeWk0sAEI/AAAAAAAABJs/EjKCFqsI-XQ/s912-Ic42/2015-08-29_13.57.50.png)
 
 ## Links
-[The topic on the forums](http://computercraft.ru/topic/1103-)
-[Pastebin](http://pastebin.com/JyK7KTCQ)
+* [The topic on the forums](http://computercraft.ru/topic/1103-)
+* [Pastebin](http://pastebin.com/JyK7KTCQ)

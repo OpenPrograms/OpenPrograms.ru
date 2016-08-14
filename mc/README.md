@@ -62,5 +62,5 @@ For example, to search for all files that start with `m`, you can use the `m*` p
 `F10` — exit.
 
 ## Links
-[The topic on the forums](http://computercraft.ru/topic/940-)
-[Pastebin](http://pastebin.com/kE3jp6nD)
+* [The topic on the forums](http://computercraft.ru/topic/940-)
+* [Pastebin](http://pastebin.com/kE3jp6nD)

@@ -39,6 +39,6 @@ Use `To Projector` button to show your model on the projector.
 Press the `Save`, `Load`, or `New file` buttons to save a model, load a model, or create a new one.
 
 ## Links
-[The topic on the Russian forums](http://computercraft.ru/topic/259-)
-[The topic on the oc.cil.li forums](https://oc.cil.li/index.php?/topic/335-)
-[Pastebin](http://pastebin.com/tdxECas7)
+* [The topic on the Russian forums](http://computercraft.ru/topic/259-)
+* [The topic on the oc.cil.li forums](https://oc.cil.li/index.php?/topic/335-)
+* [Pastebin](http://pastebin.com/tdxECas7)
