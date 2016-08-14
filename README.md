@@ -10,3 +10,4 @@ Go to the programs' directories to get the docs and the information on what the 
 * `mc` — a file commander.
 * `obj` — 3D-model drawing library for OpenGlasses.
 * `geomine` — a miner program that uses the Geolyzer to effectively mine the ores.
+* `geoglasses` — a program that searches for ores and highlights them on glasses from the OpenGlasses mod.
