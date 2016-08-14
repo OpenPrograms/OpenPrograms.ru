@@ -32,5 +32,5 @@ And, by the way, the bridge will eat A LOT of energy.
 * green to red: the density is in the range [2, 5].
 
 ## Links
-[The topic on the forums](http://computercraft.ru/topic/1628-)
-[Pastebin](http://pastebin.com/kzFvEnNx)
+* [The topic on the forums](http://computercraft.ru/topic/1628-)
+* [Pastebin](http://pastebin.com/kzFvEnNx)
