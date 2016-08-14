@@ -11,3 +11,5 @@ Go to the programs' directories to get the docs and the information on what the 
 * `obj` — 3D-model drawing library for OpenGlasses.
 * `geomine` — a miner program that uses the Geolyzer to effectively mine the ores.
 * `geoglasses` — a program that searches for ores and highlights them on glasses from the OpenGlasses mod.
+* `camera` — a program that can draw what the Computronics' camera sees.
+* `libthread` — an easy-to-use multithreading library.
