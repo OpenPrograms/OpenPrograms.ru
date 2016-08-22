@@ -1,4 +1,4 @@
---[[      Midday Commander Color Ver. 1.7 ]]--
+--[[      Midday Commander Color Ver. 1.8 ]]--
 --[[ Created by Zer0Galaxy & Neo & Totoro ]]--
 --[[              (c)  No rights reserved ]]--
 
@@ -43,17 +43,17 @@ local function saveScreen()
   scr.posX, scr.posY = term.getCursor()
   for i=1,scr.H do
     scr[i]={}
-  local FC,BC
-  for j=1,scr.W do
-    local c,fc,bc=gpu.get(j,i)
-    if fc==FC then fc=nil end
-    if bc==BC then bc=nil end
-    if fc or bc then
-        table.insert(scr[i],{fc=fc,bc=bc,c=""})
-    FC,BC=fc or FC, bc or BC
+    local FC,BC
+    for j=1,scr.W do
+      local c,fc,bc=gpu.get(j,i)
+      if fc==FC then fc=nil end
+      if bc==BC then bc=nil end
+      if fc or bc then
+          table.insert(scr[i],{fc=fc,bc=bc,c=""})
+        FC,BC=fc or FC, bc or BC
+      end
+      scr[i][#scr[i]].c=scr[i][#scr[i]].c .. c
     end
-    scr[i][#scr[i]].c=scr[i][#scr[i]].c .. c
-  end
   end
   gpu.setResolution(wScr,hScr)
 end
@@ -64,10 +64,10 @@ local function loadScreen()
   for i=1,scr.H do
     local curX=1
     for j=1,#scr[i] do
-    if scr[i][j].fc then gpu.setForeground(scr[i][j].fc) end
-    if scr[i][j].bc then gpu.setBackground(scr[i][j].bc) end
+      if scr[i][j].fc then gpu.setForeground(scr[i][j].fc) end
+      if scr[i][j].bc then gpu.setBackground(scr[i][j].bc) end
       gpu.set(curX,i,scr[i][j].c) curX=curX+len(scr[i][j].c)
-  end
+    end
   end
   SetColor(scr.cl)
   term.setCursor(scr.posX,scr.posY)
@@ -197,7 +197,7 @@ local function FindFile(FileName,Path)
   for name in fs.list(Path) do
     if string.sub(name, -1) == '/' then
       table.insert(SubDir, Path..name)
-    name=name..".."
+      name=name..".."
     end
     if string.match(name, FileName) then
       table.insert(Result, Path..name)
@@ -249,10 +249,10 @@ local function ShowPanels()
   term.setCursor(xMenu, hScr)
   for i=1,#Menu do
     if #Menu[i]>0 then
-    SetColor(NormalCl)
-    term.write(' F'..i)
-    SetColor(SelectCl)
-    term.write(Menu[i])
+      SetColor(NormalCl)
+      term.write(' F'..i)
+      SetColor(SelectCl)
+      term.write(Menu[i])
     end
   end
   term.setCursorBlink(true)
@@ -296,7 +296,7 @@ local function Dialog(cl,Lines,Str,But)
   while true do
     term.setCursorBlink(CurBut==0)
     term.setCursor(x+(W-len(Buttons()))/2, y+H-2)
-  term.write(Buttons())
+    term.write(Buttons())
     if CurBut==0 then
       local S=Str
       if len(S)>W-4 then S='..'..sub(S,-W+6) end
@@ -317,7 +317,7 @@ local function Dialog(cl,Lines,Str,But)
         else CurBut=Str and 0 or 1
         end
       elseif code == keys.back and CurBut==0 then
-     if #Str>0 then gpu.set(x+1, y+H-3, string.rep(' ',W-2)) Str=sub(Str,1,-2) end
+        if #Str>0 then gpu.set(x+1, y+H-3, string.rep(' ',W-2)) Str=sub(Str,1,-2) end
       elseif ch > 0 and CurBut == 0 then
         Str = Str..unicode.char(ch)
       end
@@ -331,6 +331,23 @@ local function call(func,...)
   return r
 end
 
+local function CpMv(func,from,to)
+  if fs.isDirectory(from) then
+    if not fs.exists(to) then call(fs.makeDirectory,to)  end
+    for name in fs.list(from) do
+      CpMv(func,fs.concat(from,name),fs.concat(to,name))
+    end
+    if func==fs.rename then call(fs.remove,from) end
+  else
+    if fs.exists(to) then
+      if Dialog(AlarmWinCl,{'File already exists!',to,'Overwrite it?'},nil,{'Yes','No'})=='Yes' then
+        if not call(fs.remove,to) then return end
+      end
+    end
+    call(func,from,to)
+  end
+end
+
 local function CopyMove(action,func)
   if Active==Find then return end
   Name = ((Active==Rght) and Left or Rght).Path..'/'..cmd
@@ -340,13 +357,7 @@ local function CopyMove(action,func)
     if cmd==Name then
       Dialog(AlarmWinCl,{'Cannot copy/move file to itself!'})
     else
-      if fs.exists(Name) then
-        if Dialog(AlarmWinCl,{'File already exists!',Name,'Overwrite it?'},nil,{'Yes','No'})=='Yes' then
-          if call(fs.remove,Name) then call(func,cmd, Name) end
-        end
-      else
-        call(func,cmd, Name)
-      end
+      CpMv(func, cmd, Name)
     end
   end
   ShowPanels()
