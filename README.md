@@ -14,6 +14,7 @@ Go to the programs' directories to get the docs and the information on what the 
 * `camera` — a program that can draw what the Computronics' camera sees.
 * `libthread` — an easy-to-use multithreading library.
 * `libqr` — a QR code generator library.
+* `libvector` — a vector library.
 
 
 ## A not-so-important-but-good-to-know message
