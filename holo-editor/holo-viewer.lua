@@ -128,7 +128,7 @@ local function loadHologram(filename)
                 y = 1
               end
               z = 1
-            end  
+            end
           end
         end
       else
@@ -136,7 +136,7 @@ local function loadHologram(filename)
           for y=1, HOLOH do
             for z=1, HOLOW do
               local a = reader:read()
-              if a ~= 0 and a ~= nil then 
+              if a ~= 0 and a ~= nil then
                 set(x,y,z, a)
               end
             end
@@ -190,7 +190,7 @@ function drawHologram()
             end
           end
         end
-      end      
+      end
     end
     print("Done.")
   else

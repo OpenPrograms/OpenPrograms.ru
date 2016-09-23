@@ -22,7 +22,7 @@ Geolyzer must be on top of the bridge.
 * `radius of scan` — suprising, but this is a radius of scan. 16 by default.
 * `search above` — if the value isn't `0`, the program will search for ores above the geolyzer too. 0 by default.
 
-The maximum radius of scan is 18 blocks. 
+The maximum radius of scan is 18 blocks.
 
 And, by the way, the bridge will eat A LOT of energy.
 

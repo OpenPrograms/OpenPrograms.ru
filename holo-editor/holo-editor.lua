@@ -116,7 +116,7 @@ local function set(x, y, z, value)
   holo[x][y][z] = value
 end
 local function get(x, y, z)
-  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then 
+  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then
     return holo[x][y][z]
   else
     return 0
@@ -215,7 +215,7 @@ function reader:init(file)
   self.file = file
 end
 function reader:read()
-  if #self.buffer == 0 then 
+  if #self.buffer == 0 then
     if not self:fetch() then return nil end
   end
   -- pop the latest element of the buffer
@@ -262,7 +262,7 @@ local function load(filename, compressed)
           local len = 1
           while true do           -- read the binary value of the length
             local b = reader:read()
-            if b == nil then 
+            if b == nil then
               file:close()
               if a == 0 then return true
               else return false, filename..": "..loc.FORMAT_READING_ERROR end
@@ -288,7 +288,7 @@ local function load(filename, compressed)
                 y = 1
               end
               z = 1
-            end  
+            end
           end
         end
       else                        -- read the raw, uncompressed data
@@ -296,7 +296,7 @@ local function load(filename, compressed)
           for y=1, HOLOH do
             for z=1, HOLOW do
               local a = reader:read()
-              if a ~= 0 and a ~= nil then 
+              if a ~= 0 and a ~= nil then
                 set(x,y,z, a)
               end
             end
@@ -319,7 +319,7 @@ local Button = {}
 Button.__index = Button
 function Button.new(func, x, y, text, fore, back, width, nu)
   self = setmetatable({}, Button)
- 
+
   self.form = '[ '
   if width == nil then width = 0
     else width = (width - unicode.len(text))-4 end
@@ -331,16 +331,16 @@ function Button.new(func, x, y, text, fore, back, width, nu)
     self.form = self.form.. ' '
   end
   self.form = self.form..' ]'
- 
+
   self.func = func
- 
+
   self.x = math.floor(x); self.y = math.floor(y)
   self.fore = fore
   self.back = back
   self.visible = true
 
   self.notupdate = nu or false
- 
+
   return self
 end
 function Button:draw(fore, back)
@@ -409,7 +409,7 @@ function Textbox.new(check, func, x, y, value, width)
 end
 function Textbox:draw(content)
   if self.visible then
-    gpu.setBackground(color.lightgray) 
+    gpu.setBackground(color.lightgray)
     gpu.setForeground(color.fore)
     gpu.set(self.x, self.y, self.form)
     if content then gpu.set(self.x+2, self.y, self.value) end
@@ -455,7 +455,7 @@ function Textbox:click(x, y)
               end
             end
           elseif name == 'touch' then
-            break 
+            break
           end
         end
         --
@@ -485,7 +485,7 @@ local function textboxNew(textboxes, check, func, x, y, value, width)
   textbox = Textbox.new(check, func, x, y, value, width)
   table.insert(textboxes, textbox)
   return textbox
-end 
+end
 local function textboxesDraw(textboxes)
   for i=1, #textboxes do
     textboxes[i]:draw(true)
@@ -543,7 +543,7 @@ local function drawGrid(x, y)
   gpu.fill(0, y, MENUX, HOLOW, ' ')
   if FULLSIZE then
     for i=0, HOLOW-1 do
-      if view ~= TOP and i == HOLOH then 
+      if view ~= TOP and i == HOLOH then
         gpu.setForeground(color.fore)
         line(1, MENUX-1, y+HOLOH)
         break
@@ -605,20 +605,20 @@ local function drawPaletteFrame()
 end
 -- draw and move the cursor of the palette menu
 local function drawColorCursor(force)
-  if force or brush.moving then 
+  if force or brush.moving then
     gpu.setBackground(color.back)
     gpu.setForeground(color.fore)
     if FULLSIZE then gpu.set(MENUX+2+brush.cx, colorCursorY, "      ")
     else gpu.set(MENUX+2+brush.cx, colorCursorY, "-----") end
-    
+
     if brush.moving then
       if brush.x ~= brush.color * colorCursorWidth then brush.x = brush.color*colorCursorWidth end
       if brush.cx < brush.x then brush.cx = brush.cx + 1
       elseif brush.cx > brush.x then brush.cx = brush.cx - 1
       else brush.moving = false end
     end
-    
-    if FULLSIZE then 
+
+    if FULLSIZE then
       gpu.setBackground(color.lightgray)
       gpu.set(MENUX+2+brush.cx, colorCursorY, ":^^^^:")
     else gpu.set(MENUX+2+brush.cx, colorCursorY, ":vvv:") end
@@ -648,15 +648,15 @@ local function mainScreen()
   frame(1,1, WIDTH, HEIGHT, "{ Hologram Editor }", not FULLSIZE)
   -- "canvas"
   drawGrid(GRIDX, GRIDY)
-  
+
   drawPaletteFrame()
   drawLayerFrame()
   drawUtilsFrame()
-  
+
   drawColorCursor(true)
   buttonsDraw(buttons)
   textboxesDraw(textboxes)
-  
+
   -- "about" - briefly about the creators
   if FULLSIZE then
     gpu.setForeground(color.info)
@@ -723,7 +723,7 @@ local function drawVoxel(sx, sy, nogrid)
     if voxel ~= 0 then
       gpu.setForeground(hexcolortable[voxel])
       gpu.set(dx, dy, "██")
-    else  
+    else
       local ghost = get(gx, gy, gz)
       if ghost ~= 0 then
         gpu.setForeground(darkhexcolors[ghost])
@@ -780,16 +780,16 @@ local function exit() running = false end
 local function nextGhost()
   local limit = HOLOH
   if view ~= TOP then limit = HOLOW end
-  
+
   if ghost_layer_below then
     ghost_layer_below = false
     if ghost_layer < limit then
       ghost_layer = layer + 1
     else ghost_layer = limit end
     drawLayer()
-  else  
+  else
     if ghost_layer < limit then
-      ghost_layer = ghost_layer + 1 
+      ghost_layer = ghost_layer + 1
       drawLayer()
     end
   end
@@ -836,7 +836,7 @@ local function nextLayer()
   local limit = HOLOH
   if view ~= TOP then limit = HOLOW end
 
-  if layer < limit then 
+  if layer < limit then
     layer = layer + 1
     tb_layer:setValue(layer)
     tb_layer:draw(true)
@@ -845,8 +845,8 @@ local function nextLayer()
   end
 end
 local function prevLayer()
-  if layer > 1 then 
-    layer = layer - 1 
+  if layer > 1 then
+    layer = layer - 1
     tb_layer:setValue(layer)
     tb_layer:draw(true)
     moveGhost()
@@ -867,7 +867,7 @@ local function setLayer(value)
 end
 
 local function setFilename(str)
-  if str ~= nil and str ~= '' and unicode.len(str)<30 then 
+  if str ~= nil and str ~= '' and unicode.len(str)<30 then
     return true
   else
     return false
@@ -916,8 +916,8 @@ local function moveSelector(num)
   tb_blue:setValue(colortable[num][3]); tb_blue:draw(true)
 end
 
-local function setTopView(norefresh) 
-  view = TOP 
+local function setTopView(norefresh)
+  view = TOP
   if layer > HOLOH then layer = HOLOH end
   if not norefresh then drawLayer() end
 end
@@ -952,7 +952,7 @@ local function drawHologram()
             end
           end
         end
-      end      
+      end
     end
   else
     showMessage(loc.PROJECTOR_UNAVAILABLE_MESSAGE, loc.ERROR_CAPTION, color.error)
@@ -1127,9 +1127,9 @@ local function delay(active) if active then return 0.02 else return 2.0 end end
 while running do
   local name, add, x, y, button = event.pull(delay(brush.moving))
 
-  if name == 'key_down' then 
+  if name == 'key_down' then
     -- if 'Q' is pressed, exit
-    if y == 16 then break 
+    if y == 16 then break
     elseif y == 41 then
       moveSelector(0)
     elseif y>=2 and y<=4 then
@@ -1158,11 +1158,11 @@ while running do
           end
         end
       end
-      
+
       -- "drawing"
       local limit
       if view == TOP then limit = HOLOW else limit = HOLOH end
-      
+
       local dx, dy = nil, nil
       if FULLSIZE then
         if x >= GRIDX and x < GRIDX+HOLOW*2 then
