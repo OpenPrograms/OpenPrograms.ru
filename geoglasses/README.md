@@ -11,20 +11,20 @@
 ### Requirements
 * Geolyzer.
 * Glasses bridge from OpenGlasses.
-* Glasses from that mod.
+* Glasses themselves.
 
 Geolyzer must be on top of the bridge.
 
 ### Syntax
 `scan [density] [radius of scan] [search above]`
 
-* `density` — that's a minimum density of blocks that the program will display. 3 by default.
-* `radius of scan` — suprising, but this is a radius of scan. 16 by default.
-* `search above` — if the value isn't `0`, the program will search for ores above the geolyzer too. 0 by default.
+* `density` — a minimum density of blocks that the program will display. 3 by default.
+* `radius of scan` — a radius of scan. 16 by default.
+* `search above` controls whether the program should search for ores above the geolyzer too.
 
 The maximum radius of scan is 18 blocks.
 
-And, by the way, the bridge will eat A LOT of energy.
+And, by the way, the bridge will eat lots of energy. Consider connecting more capacitors and power convertors if a computer runs out of energy.
 
 ### Colors
 * white: the density is less than 2.

@@ -15,7 +15,7 @@ Using a simple API, you can do something like this:
 
 Unfortunately, the draw speed on OpenGlasses' glasses is *incredibly* slooooooow, and the more polygons a model has, the longer time it will take to draw a model. The skull on screenshot above consists of 9000 polygons, and needs ~5 minutes to draw it.
 
-Moreover, if the amount of polygons is a lot, the model will flicker. That's because the glasses bridge will use an incredible amount of energy.
+Moreover, if the amount of polygons is a lot, the model will flicker. That's because the glasses bridge will use an incredible amount of energy. Fortunately, this can be easily resolved by connecting more capacitors and power converters to your OC network.
 
 ### API
 * `load(filename: string)` — loads a model from the given file, including the `.obj` extension.
