@@ -38,5 +38,5 @@ thread.waitForAll()
 ![Screenshot 1: the result of executing the code above](http://computercraft.ru/uploads/monthly_04_2015/post-7-0-53646300-1427986494.png)
 
 ## Links
-[The topic on the forums](http://computercraft.ru/topic/634-)
-[Pastebin](http://pastebin.com/E0SzJcCx)
+* [The topic on the forums](http://computercraft.ru/topic/634-)
+* [Pastebin](http://pastebin.com/E0SzJcCx)
