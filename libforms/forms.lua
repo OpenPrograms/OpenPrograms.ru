@@ -47,7 +47,7 @@ function TComponent:draw()
   if self.elements then
     for i=1,#self.elements do
       if self.elements[i].visible then self.elements[i]:draw() end
-  end
+    end
   end
 end
 
@@ -63,7 +63,7 @@ function TComponent:mouseEv(ev,x,y,btn,user)
   if self.elements then
     for i=#self.elements,1,-1 do
       local e=self.elements[i]
-    if e.visible and e.X and x>=e.X and x<e.X+e.W and y>=e.Y and y<e.Y+e.H then
+      if e.visible and e.X and x>=e.X and x<e.X+e.W and y>=e.Y and y<e.Y+e.H then
         e:mouseEv(ev,x,y,btn,user)
         return
       end
@@ -85,7 +85,7 @@ end
 function TComponent:show()
   if self.parent then
     self.visible=true
-  self.parent:draw()
+    self.parent:draw()
   else
     self:draw()
   end
@@ -95,7 +95,7 @@ function TComponent:destruct()
   if self.parent then
     for i=1,#self.parent.elements do
       if self.parent.elements[i]==self then table.remove(self.parent.elements,i) break end
-  end
+    end
   end
 end
 
@@ -149,7 +149,7 @@ function TLabel:paint()
    self.W,self.H=0,0
    for line in value:gmatch("([^\n]+)") do
      self.H=self.H+1
-   if len(line)>self.W then self.W=len(line) end
+     if len(line)>self.W then self.W=len(line) end
    end
    if self.W<1 then self.W=1 end
    if self.H<1 then self.H=1 end
@@ -241,9 +241,9 @@ keys[211]=function()    -- Del
     writeLine(posY)
   else
     if posY<#text then
-    text[posY]=text[posY]..text[posY+1]
-    table.remove(text,posY+1)
-    writeText()
+      text[posY]=text[posY]..text[posY+1]
+      table.remove(text,posY+1)
+      writeText()
     end
   end
 end
@@ -255,8 +255,8 @@ keys[14] =function()    -- BackSp
   else
     if posY>1 then
       posX,posY,text[posY-1]=len(text[posY-1])+1,posY-1,text[posY-1]..text[posY]
-    table.remove(text,posY+1)
-    writeText()
+      table.remove(text,posY+1)
+      writeText()
     end
   end
 end
@@ -269,20 +269,6 @@ local function onKeyDown(char, code)
 end
 
 local function onClipboard(value)
-  local s,ss
-  while value~="" do
-    s,ss=value:match("^(%C+)(.*)")
-  if s then
-    insert(s)
-    value=ss
-  end
-    s,ss=value:match("^(%c)(.*)")
-  if s then
-    if s=="\n" then keys[28](true) end
-    if s=="\t" then keys[15]() end
-    value=ss
-  end
-  end
 end
 
 local function onClick(x,y)
@@ -299,12 +285,12 @@ if type(text)=="table" then
   keys[68] =function() running=false end   -- F10
   keys[200]=function() setCursor(posX,posY-1) end   -- Up
   keys[208]=function() setCursor(posX,posY+1) end   -- Down
-  keys[28] =function(noShift)   -- Enter
-    local n=noShift and "" or text[posY]:match("^%s*")
-    table.insert(text,posY+1,n..sub(text[posY],posX))
-  text[posY]=sub(text[posY],1,posX-1)
-  posX,posY=len(n)+1,posY+1
-  writeText()
+  keys[28] =function()   -- Enter
+    local n=len(text[posY]:match("^%s*"))
+    table.insert(text,posY+1,string.rep(" ",n)..sub(text[posY],posX))
+    text[posY]=sub(text[posY],1,posX-1)
+    posX,posY=n+1,posY+1
+    writeText()
   end
 else
   posX=len(text)+1
@@ -313,8 +299,9 @@ else
 end
 term.setCursorBlink(true)
 writeText()
+local event, address, arg1, arg2, arg3
 while running do
-  local event, address, arg1, arg2, arg3 = event.pull()
+  event, address, arg1, arg2, arg3 = term.pull()
   if type(address) == "string" and isPrimary(address) then
     term.setCursorBlink(false)
     if event == "key_down" then onKeyDown(arg1, arg2)
@@ -325,6 +312,7 @@ while running do
     term.setCursorBlink(true)
   end
 end
+if event=="touch" then pushSignal( event, address, arg1, arg2, arg3 ) end
 term.setCursorBlink(false)
 return text[1]
 end
@@ -333,9 +321,9 @@ function TEdit:touch(x, y, btn, user)
   if btn==0 then
     gpu.setBackground(self.color)
     gpu.setForeground(self.fontColor)
-  if type(self.text)=="table" then editText(self.text,self.X+1,self.Y+1,self.W-2,self.H-2)
-  else self.text=editText(self.text,self.X+1,self.Y+1,self.W-2,1)  end
-  self:draw()
+    if type(self.text)=="table" then editText(self.text,self.X+1,self.Y+1,self.W-2,self.H-2)
+    else self.text=editText(self.text,self.X+1,self.Y+1,self.W-2,1)    end
+    self:draw()
     if self.onEnter then self:onEnter(user) end
   end
 end
@@ -364,9 +352,9 @@ TList.__index=TList
 function TList:paint()
   local b= self.border==0 and 0 or 1
   for i=1,self.H-2*b do
-  if i+self.shift==self.index then gpu.setForeground(self.sfColor) gpu.setBackground(self.selColor) end
+    if i+self.shift==self.index then gpu.setForeground(self.sfColor) gpu.setBackground(self.selColor) end
     gpu.set(self.X+b,self.Y+i+b-1, padRight(sub(self.lines[i+self.shift] or "",1,self.W-2*b),self.W-2*b))
-  if i+self.shift==self.index then gpu.setForeground(self.fontColor) gpu.setBackground(self.color) end
+    if i+self.shift==self.index then gpu.setForeground(self.fontColor) gpu.setBackground(self.color) end
   end
 end
 
@@ -387,13 +375,13 @@ function TList:sort(comp)
   comp=comp or function(list,i,j) return list.lines[j]<list.lines[i] end
   for i=1,#self.lines-1 do
     for j=i+1,#self.lines do
-    if comp(self,i,j) then
-      if self.index==i then self.index=j
-    elseif self.index==j then self.index=i end
-      self.lines[i],self.lines[j]=self.lines[j],self.lines[i]
-      self.items[i],self.items[j]=self.items[j],self.items[i]
+      if comp(self,i,j) then
+        if self.index==i then self.index=j
+        elseif self.index==j then self.index=i end
+        self.lines[i],self.lines[j]=self.lines[j],self.lines[i]
+        self.items[i],self.items[j]=self.items[j],self.items[i]
+      end
     end
-  end
   end
   self:redraw()
 end
@@ -404,9 +392,9 @@ function TList:touch(x, y, btn, user)
     local i=self.shift+y-b
     if self.index~=i and self.lines[i] then
       self.index=i
-    self:redraw()
-    if self.onChange then self:onChange(self.lines[i],self.items[i],user) end
-  end
+      self:redraw()
+      if self.onChange then self:onChange(self.lines[i],self.items[i],user) end
+    end
   end
 end
 
@@ -425,7 +413,6 @@ function TComponent:addList(left, top, onChange)
 end
 
 local work
-----------------------------------------
 local TInvisible=setmetatable({W=10, H=3, border=2, draw=function() end},TComponent)
 TInvisible.__index=TInvisible
 ------------------Event-----------------
@@ -456,15 +443,15 @@ function TTimer:run()
   self.Enabled=nil
   if self.onTime then
     self.timerId=event.timer(self.interval,
-  function ()
-    if self.Enabled and work then
-      self.onTime(self)
-    else
-    self:stop()
-    end
-  end,
-  math.huge
-  )
+    function ()
+      if self.Enabled and work then
+        self.onTime(self)
+      else
+        self:stop()
+      end
+    end,
+    math.huge
+    )
   end
 end
 function TTimer:stop()
@@ -480,7 +467,6 @@ function TComponent:addTimer(interval, onTime)
   return obj
 end
 
-----------------------------------------
 local listeners={}
 
 function forms.listen(name, callback)
@@ -529,11 +515,11 @@ function forms.run(form)
   while work do
     local ev,adr,x,y,btn,user=event.pull()
     if mouseEv[ev] and adr==gpu.getScreen() then activeForm:mouseEv(ev,x,y,btn,user) end
-  if listeners[ev] then
-    for i=1,#listeners[ev] do listeners[ev][i](ev,adr,x,y,btn,user) end
+    if listeners[ev] then
+      for i=1,#listeners[ev] do listeners[ev][i](ev,adr,x,y,btn,user) end
     end
-  if listeners[""] then
-    for i=1,#listeners[""] do listeners[""][i](ev,adr,x,y,btn,user) end
+    if listeners[""] then
+      for i=1,#listeners[""] do listeners[""][i](ev,adr,x,y,btn,user) end
     end
   end
   gpu.setForeground(Fc)
