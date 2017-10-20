@@ -63,7 +63,8 @@ local function loadScreen()
   term.setCursorBlink(false)
   for i=1,scr.H do
     local curX=1
-    for j=1,#scr[i] do
+    local scrLen = #scr[i]
+    for j=1,scrLen do
       if scr[i][j].fc then gpu.setForeground(scr[i][j].fc) end
       if scr[i][j].bc then gpu.setBackground(scr[i][j].bc) end
       gpu.set(curX,i,scr[i][j].c) curX=curX+len(scr[i][j].c)
@@ -167,7 +168,8 @@ function panel:SetPos(FileName)
   self.CurLine=1
   self.Shift=1
   self:GetFiles()
-  for i=1,#self.tFiles do
+  local tFilesLen = #self.tFiles
+  for i=1,tFilesLen do
     if self.tFiles[i]==FileName then
       self.CurLine=i
       break
@@ -203,9 +205,11 @@ local function FindFile(FileName,Path)
       table.insert(Result, Path..name)
     end
   end
-  for i=1,#SubDir do
+  local SubDirLen = #SubDir
+  for i=1,SubDirLen do
     local Files = FindFile(FileName,SubDir[i])
-    for j=1,#Files do table.insert(Result,Files[j]) end
+    local FilesLen = #Files
+    for j=1,FilesLen do table.insert(Result,Files[j]) end
   end
   return Result
 end
@@ -217,7 +221,8 @@ function Fpanel:GetFiles()
   self.tFiles=FindFile('^'..Templ..'$','')
   table.insert(self.tFiles,1,'..')
   self.tSize={'DIR'}
-  for i=2,#self.tFiles do
+  local tFilesLen = #self.tFiles
+  for i=2,tFilesLen do
     if fs.isDirectory(self.tFiles[i]) then
       self.tSize[i]='DIR'
     else
