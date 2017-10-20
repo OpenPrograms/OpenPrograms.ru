@@ -97,12 +97,13 @@ function render(size, zoom, color, side)
   term.clear()
   term.setCursor(1,1)
   local yp = 1
+  local colorLen = #color
   for j = -zoom, zoom, size do
     for i = zoom, -zoom, -size do
       local d = look(i, 0-j)
       local a = 1
       if d>0 then
-        a = 2+((#color-1)-math.min(#color-1, (d/1.2)))
+        a = 2+((colorLen-1)-math.min(colorLen-1, (d/1.2)))
       end
       gpu.setForeground(color[math.floor(a)])
       term.write('██')

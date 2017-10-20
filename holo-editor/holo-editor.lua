@@ -190,9 +190,11 @@ local function save(filename, compressed)
         if length > 0 then
           writer:write(symbol)
           local l = toBinary(length + 1)
-          l[#l] = nil
+          local lLen = #l
+          l[lLen] = nil
+          lLen = lLen - 1
           l[1] = l[1] + 2
-          for i=#l, 1, -1 do writer:write(l[i]) end
+          for i=lLen, 1, -1 do writer:write(l[i]) end
         end
       end
       local len = 0
@@ -237,12 +239,13 @@ function reader:init(file)
   self.file = file
 end
 function reader:read()
-  if #self.buffer == 0 then
+  local bufferLen = #self.buffer  
+  if bufferLen == 0 then
     if not self:fetch() then return nil end
   end
   -- get the last symbol from the buffer
-  local sym = self.buffer[#self.buffer]
-  self.buffer[#self.buffer] = nil
+  local sym = self.buffer[bufferLen]
+  self.buffer[bufferLen] = nil
   return sym
 end
 function reader:fetch()
@@ -395,12 +398,14 @@ local function buttonNew(buttons, func, x, y, text, fore, back, width, notupdate
   return button
 end
 local function buttonsDraw(buttons)
-  for i=1, #buttons do
+  local buttonsLen = #buttons
+  for i=1, buttonsLen do
     buttons[i]:draw()
   end
 end
 local function buttonsClick(buttons, x, y)
-  for i=1, #buttons do
+  local buttonsLen = #buttons
+  for i=1, buttonsLen do
     local ok, data = buttons[i]:click(x, y)
     if ok then return data end
   end
@@ -494,12 +499,14 @@ local function textboxNew(textboxes, validator, func, x, y, width, value, defVal
   return textbox
 end
 local function textboxesDraw(textboxes)
-  for i=1, #textboxes do
+  local textboxesLen = #textboxes
+  for i=1, textboxesLen do
     textboxes[i]:draw()
   end
 end
 local function textboxesClick(textboxes, x, y)
-  for i=1, #textboxes do
+  local textboxesLen = #textboxes
+  for i=1, textboxesLen do
     textboxes[i]:click(x, y)
   end
 end
