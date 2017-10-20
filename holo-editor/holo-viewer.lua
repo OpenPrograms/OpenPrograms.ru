@@ -44,7 +44,7 @@ function set(x, y, z, value)
   holo[x][y][z] = value
 end
 function get(x, y, z)
-  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then 
+  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then
     return holo[x][y][z]
   else
     return 0
@@ -61,7 +61,7 @@ function reader:init(file)
   self.file = file
 end
 function reader:read()
-  if #self.buffer == 0 then 
+  if #self.buffer == 0 then
     if not self:fetch() then return nil end
   end
   local sym = self.buffer[#self.buffer]
@@ -118,7 +118,7 @@ local function loadHologram(filename)
           local len = 1
           while true do
             local b = reader:read()
-            if b == nil then 
+            if b == nil then
               file:close()
               if a == 0 then return true
               else error(loc.ERROR_INVALID_FORMAT_STRUCTURE) end
@@ -141,7 +141,7 @@ local function loadHologram(filename)
                 y = 1
               end
               z = 1
-            end  
+            end
           end
         end
       else
@@ -149,7 +149,7 @@ local function loadHologram(filename)
           for y = 1, HOLOH do
             for z = 1, HOLOW do
               local a = reader:read()
-              if a ~= 0 and a ~= nil then 
+              if a ~= 0 and a ~= nil then
                 set(x, y, z, a)
               end
             end
@@ -203,7 +203,7 @@ function drawHologram()
             end
           end
         end
-      end      
+      end
     end
     print(loc.DONE)
   else

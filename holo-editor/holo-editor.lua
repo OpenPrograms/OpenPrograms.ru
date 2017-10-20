@@ -138,7 +138,7 @@ local function set(x, y, z, value)
   holo[x][y][z] = value
 end
 local function get(x, y, z)
-  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then 
+  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then
     return holo[x][y][z]
   else
     return 0
@@ -237,7 +237,7 @@ function reader:init(file)
   self.file = file
 end
 function reader:read()
-  if #self.buffer == 0 then 
+  if #self.buffer == 0 then
     if not self:fetch() then return nil end
   end
   -- get the last symbol from the buffer
@@ -285,7 +285,7 @@ local function load(filename, compressed)
           local len = 1
           while true do           -- reading binary length value
             local b = reader:read()
-            if b == nil then 
+            if b == nil then
               file:close()
               if a == 0 then return true
               else return false, filename..": "..loc.FORMAT_READING_ERROR end
@@ -311,7 +311,7 @@ local function load(filename, compressed)
                 y = 1
               end
               z = 1
-            end  
+            end
           end
         end
       else                        -- reading uncompressed data
@@ -319,7 +319,7 @@ local function load(filename, compressed)
           for y=1, HOLOH do
             for z=1, HOLOW do
               local a = reader:read()
-              if a ~= 0 and a ~= nil then 
+              if a ~= 0 and a ~= nil then
                 set(x,y,z, a)
               end
             end
@@ -342,7 +342,7 @@ local Button = {}
 Button.__index = Button
 function Button.new(func, x, y, text, fore, back, width, nu)
   self = setmetatable({}, Button)
- 
+
   self.form = '[ '
   if width == nil then width = 0
     else width = (width - unicode.len(text))-4 end
@@ -354,16 +354,16 @@ function Button.new(func, x, y, text, fore, back, width, nu)
     self.form = self.form.. ' '
   end
   self.form = self.form..' ]'
- 
+
   self.func = func
- 
+
   self.x = math.floor(x); self.y = math.floor(y)
   self.fore = fore
   self.back = back
   self.visible = true
 
   self.notupdate = nu or false
- 
+
   return self
 end
 function Button:draw(fore, back)
@@ -492,7 +492,7 @@ local function textboxNew(textboxes, validator, func, x, y, width, value, defVal
   textbox = Textbox.new(validator, func, x, y, width, value, defValue)
   table.insert(textboxes, textbox)
   return textbox
-end 
+end
 local function textboxesDraw(textboxes)
   for i=1, #textboxes do
     textboxes[i]:draw()
@@ -611,20 +611,20 @@ local function drawPaletteFrame()
 end
 -- draw and move palette selector
 local function drawColorCursor(force)
-  if force or brush.moving then 
+  if force or brush.moving then
     foreground(color.fore)
     background(color.back)
     if FULLSIZE then gpu.set(MENUX+2+brush.cx, colorCursorY, "      ")
     else gpu.set(MENUX+2+brush.cx, colorCursorY, "-----") end
-    
+
     if brush.moving then
       if brush.x ~= brush.color * colorCursorWidth then brush.x = brush.color*colorCursorWidth end
       if brush.cx < brush.x then brush.cx = brush.cx + 1
       elseif brush.cx > brush.x then brush.cx = brush.cx - 1
       else brush.moving = false end
     end
-    
-    if FULLSIZE then 
+
+    if FULLSIZE then
       background(color.lightgray)
       gpu.set(MENUX+2+brush.cx, colorCursorY, ":^^^^:")
     else gpu.set(MENUX+2+brush.cx, colorCursorY, ":vvv:") end
@@ -654,15 +654,15 @@ local function mainScreen()
   frame(1,1, WIDTH, HEIGHT, "{ Hologram Editor }", not FULLSIZE)
   -- "canvas"
   drawGrid(GRIDX, GRIDY)
-  
+
   drawPaletteFrame()
   drawLayerFrame()
   drawUtilsFrame()
-  
+
   drawColorCursor(true)
   buttonsDraw(buttons)
   textboxesDraw(textboxes)
-  
+
   -- "about"
   foreground(color.info)
   background(color.gray)
@@ -787,9 +787,9 @@ local function nextGhost()
       ghost_layer = layer + 1
     else ghost_layer = view.depth end
     drawLayer()
-  else  
+  else
     if ghost_layer < view.depth then
-      ghost_layer = ghost_layer + 1 
+      ghost_layer = ghost_layer + 1
       drawLayer()
     end
   end
@@ -828,7 +828,7 @@ local function moveGhost()
 end
 
 local function nextLayer()
-  if layer < view.depth then 
+  if layer < view.depth then
     layer = layer + 1
     tb_layer.value = layer
     tb_layer:draw()
@@ -837,8 +837,8 @@ local function nextLayer()
   end
 end
 local function prevLayer()
-  if layer > 1 then 
-    layer = layer - 1 
+  if layer > 1 then
+    layer = layer - 1
     tb_layer.value = layer
     tb_layer:draw()
     moveGhost()
@@ -939,7 +939,7 @@ local function drawHologram()
             end
           end
         end
-      end      
+      end
     end
   else
     showMessage(loc.PROJECTOR_UNAVAILABLE_MESSAGE, loc.ERROR_CAPTION, color.error)
@@ -1109,7 +1109,7 @@ local function delay(active) if active then return 0.02 else return 2.0 end end
 while running do
   local name, add, x, y, button = event.pull(delay(brush.moving))
 
-  if name == 'key_down' then 
+  if name == 'key_down' then
     -- if 'Q' was pressed - the quit app
     if y == keys.EXIT then
       exit()
@@ -1141,7 +1141,7 @@ while running do
           end
         end
       end
-      
+
       -- "render"
       local dx, dy
       if FULLSIZE then
