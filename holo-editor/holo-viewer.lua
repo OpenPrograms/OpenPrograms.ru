@@ -61,11 +61,12 @@ function reader:init(file)
   self.file = file
 end
 function reader:read()
-  if #self.buffer == 0 then
+  local bufferLen = #self.buffer
+  if bufferLen == 0 then
     if not self:fetch() then return nil end
   end
-  local sym = self.buffer[#self.buffer]
-  self.buffer[#self.buffer] = nil
+  local sym = self.buffer[bufferLen]
+  self.buffer[bufferLen] = nil
   return sym
 end
 function reader:fetch()
