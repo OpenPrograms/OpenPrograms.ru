@@ -1,11 +1,22 @@
---      Hologram Viewer v0.70
--- by NEO, Totoro (aka MoonlightOwl)
--- 11/12/2014, all right reserved =)
---        computercraft.ru
+--       Hologram Viewer v0.7.1
+-- 2017 (c) Totoro (aka MoonlightOwl)
+--         computercraft.ru
 
 local fs = require('filesystem')
+local shell = require('shell')
 local com = require('component')
 local args = { ... }
+
+local loc = {
+  ERROR_NO_FILENAME = "[ERROR] You must give some filename to show. Like: show myfile.3dx",
+  ERROR_WRONG_FILE_FORMAT = "[ERROR] Wrong file format. Viewer can show *.3dx or *.3d files only.",
+  ERROR_INVALID_FORMAT_STRUCTURE = "[ERROR] Invalid file structure.",
+  ERROR_UNABLE_TO_OPEN = "[ERROR] Cannot open: ",
+  ERROR_FILE_NOT_FOUND = "[ERROR] File not found: ",
+  ERROR_WRONG_SCALE = "[ERROR] Scale parameter must be a number between 0.33 and 4.00",
+  ERROR_NO_PROJECTOR = "[ERROR] Projector is not found.",
+  DONE = "Done. The hologram was successfully rendered."
+}
 
 -- ================================ H O L O G R A M S   S T U F F ================================ --
 -- loading add. components
@@ -33,7 +44,7 @@ function set(x, y, z, value)
   holo[x][y][z] = value
 end
 function get(x, y, z)
-  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then
+  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then 
     return holo[x][y][z]
   else
     return 0
@@ -50,7 +61,7 @@ function reader:init(file)
   self.file = file
 end
 function reader:read()
-  if #self.buffer == 0 then
+  if #self.buffer == 0 then 
     if not self:fetch() then return nil end
   end
   local sym = self.buffer[#self.buffer]
@@ -74,20 +85,22 @@ end
 
 local function loadHologram(filename)
   if filename == nil then
-    error("[ERROR] Incorrect filename.")
+    error(loc.ERROR_NO_FILENAME)
   end
 
-  local compressed
-  if string.sub(filename, -4) == '.3dx' then
-    compressed = true
-  elseif string.sub(filename, -3) == '.3d' then
-    compressed = false
-  else
-    error("[ERROR] No file extension given.")
-  end
+  local path = shell.resolve(filename, "3dx")
+  if path == nil then path = shell.resolve(filename, "3d") end
 
-  if fs.exists(filename) then
-    file = io.open(filename, 'rb')
+  if path ~= nil then
+    local compressed
+    if string.sub(path, -4) == '.3dx' then
+      compressed = true
+    elseif string.sub(path, -3) == '.3d' then
+      compressed = false
+    else
+      error(loc.ERROR_WRONG_FILE_FORMAT)
+    end
+    file = io.open(path, 'rb')
     if file ~= nil then
       for i=1, 3 do
         for c=1, 3 do
@@ -105,39 +118,39 @@ local function loadHologram(filename)
           local len = 1
           while true do
             local b = reader:read()
-            if b == nil then
+            if b == nil then 
               file:close()
               if a == 0 then return true
-              else error("[ERROR] Bad file format.") end
+              else error(loc.ERROR_INVALID_FORMAT_STRUCTURE) end
             end
             local fin = (b > 1)
-            if fin then b = b-2 end
+            if fin then b = b - 2 end
             len = bit32.lshift(len, 1)
             len = len + b
             if fin then break end
           end
           len = len - 1
-          for i=1, len do
+          for i = 1, len do
             if a ~= 0 then set(x,y,z, a) end
-            z = z+1
+            z = z + 1
             if z > HOLOW then
-              y = y+1
+              y = y + 1
               if y > HOLOH then
-                x = x+1
+                x = x + 1
                 if x > HOLOW then file:close(); return true end
                 y = 1
               end
               z = 1
-            end
+            end  
           end
         end
       else
-        for x=1, HOLOW do
-          for y=1, HOLOH do
-            for z=1, HOLOW do
+        for x = 1, HOLOW do
+          for y = 1, HOLOH do
+            for z = 1, HOLOW do
               local a = reader:read()
-              if a ~= 0 and a ~= nil then
-                set(x,y,z, a)
+              if a ~= 0 and a ~= nil then 
+                set(x, y, z, a)
               end
             end
           end
@@ -146,16 +159,16 @@ local function loadHologram(filename)
       file:close()
       return true
     else
-      error("[ERROR] Could not open the file: "..filename.."!")
+      error(loc.ERROR_UNABLE_TO_OPEN .. filename)
     end
   else
-      error("[ERROR] File not found: "..filename.."!")
+    error(loc.ERROR_FILE_NOT_FOUND .. filename)
   end
 end
 
 function scaleHologram(scale)
-  if scale == nil or scale<0.33 or scale>4 then
-    error("[ERROR] The scale of hologram must be a number in the range [0.33, 4]")
+  if scale == nil or scale < 0.33 or scale > 4 then
+    error(loc.ERROR_WRONG_SCALE)
   end
   proj_scale = scale
 end
@@ -171,30 +184,30 @@ function drawHologram()
     h.setScale(proj_scale)
     -- send palette
     if depth == 2 then
-      for i=1, 3 do
+      for i = 1, 3 do
         h.setPaletteColor(i, hexcolortable[i])
       end
     else
       h.setPaletteColor(1, hexcolortable[1])
     end
     -- send voxel array
-    for x=1, HOLOW do
-      for y=1, HOLOH do
-        for z=1, HOLOW do
+    for x = 1, HOLOW do
+      for y = 1, HOLOH do
+        for z = 1, HOLOW do
           n = get(x,y,z)
           if n ~= 0 then
             if depth == 2 then
-              h.set(x,y,z,n)
+              h.set(x, y, z, n)
             else
-              h.set(x,y,z,1)
+              h.set(x, y, z, 1)
             end
           end
         end
-      end
+      end      
     end
-    print("Done.")
+    print(loc.DONE)
   else
-    error("[ERROR] Hologram Projector not found.")
+    error(loc.ERROR_NO_PROJECTOR)
   end
 end
 -- =============================================================================================== --
