@@ -1,4 +1,4 @@
---       Hologram Editor v0.7.1
+--       Hologram Editor v0.7.2
 -- 2017 (c) Totoro (aka MoonlightOwl)
 --         computercraft.ru
 
@@ -8,6 +8,7 @@ local term = require('term')
 local fs = require('filesystem')
 local shell = require('shell')
 local com = require('component')
+local bit32 = require('bit32')
 local gpu = com.gpu
 
 --     Colors     --

@@ -1,10 +1,11 @@
---       Hologram Viewer v0.7.1
+--       Hologram Viewer v0.7.2
 -- 2017 (c) Totoro (aka MoonlightOwl)
 --         computercraft.ru
 
 local fs = require('filesystem')
 local shell = require('shell')
 local com = require('component')
+local bit32 = require('bit32')
 local args = { ... }
 
 local loc = {
