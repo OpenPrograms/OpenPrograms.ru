@@ -1,45 +1,59 @@
 # geomine
-*A miner that uses Geolyzer.*
+*A miner that uses the Geolyzer.*
 
 ## Developers
 * Doob (a.k.a. Log on the oc.cil.li forums)
 
 ## Description
-This programs uses the Geolyzer to effectively mine the ores.
+This programs uses the geolyzer to mine the ores efficiently.
 
 ### Launch
 1. Place a robot.
-2. Give a mining tool to robot (it's better to use some electric pickaxe or drill).
-3. Place a chest and a charger (don't forget to turn it on, either by screnching, or by placing and flipping a lever).
-4. Run the program (`geomine [columns] [height]`). The `[columns]` is the amount of 8×8 columns from bedrock to the starting level. `[height]` is the max amount of blocks that robot may descend.
-5. Make a tea, sleep, or do something else. It may takes several hours to completely mine all the ores out.
+2. Give a mining tool to robot (it's better to use an electric pickaxe or drill).
+3. Place a chest and a charger (don't forget to turn the charger on, either
+   by screnching it, or by placing a level on the block and flipping it).
+4. Run the program (`geomine [columns] [height]`).
+   * The `[columns]` argument determines how many 8×8 block columns to dig.
+   * `[height]` is the maximum number of blocks by which the robot may descend.
+5. Brew a cup of tea, sleep, or watch funny videos, as the robot may take
+   several hours to finish.
 
 ### Requirements
-* Inventory upgrades (the more you have, the less time will be spent on returning back to the starting location to unload the inventory).
-* Inventory controller upgrade.
-* Geolyzer.
-* Some tool to use for mining. As said earlier, it's better to have rechargeable tools.
-* Hover upgrade.
+* Inventory upgrades (the more you have, the less time the robot wastes on going
+  back home to unload the inventory).
+* An inventory controller upgrade.
+* A geolyzer.
+* Some tool to use for mining. As said earlier, it's better to use rechargeable
+  tools.
+* A hover upgrade.
 
-Additional components:
+Optional components:
 
-* Crafting upgrade.
-* Generator upgrade.
-* Chunkloader upgrade.
-* Linked card.
+* A crafting upgrade.
+* A generator upgrade.
+* A chunkloader upgrade.
+* A linked card.
 
 ### Algorithm
-* Robot scans the squares 8×8, descending.
-* Mines the blocks that have a density in the set range.
-* When the robot reaches the bedrock, it returns back and goes to the next column.
-* When the energy level is low, or the inventory is almost full, or the tool is about to break, robot drops the garbage, tries to refuel the internal generator (if there was a generator upgrade), and returns back to the starting position to recharge the tool and drop the loot into the chest.
-* If there is a crafting upgrade in the robot, it will first compress some resources into blocks (e.g., redstone, lapis, diamonds).
-* If the robot has the cunkloader upgrade, it will be turned on when the robots starts mining, and turned off when the robot is done.
-* And, finally, if there's a linked card installed, the robot will send status messages when:
-  * No chest was found.
-  * The chest is full.
-  * The block robot tries to mine, is indestructable, and is not a bedrock.
-  * The robot is done mining.
+1. The robot scans the 8×8 area in front of it.
+2. Then it mines the blocks whose density is in the configured range.
+3. If the robot reaches the bedrock level, it returns and proceeds to the next
+   column.
+4. Otherwise, it descends by a block, and goes back to step 1.
+5. If the energy level is low, or the inventory is almost full, or the tool is
+   about to break, robot drops the garbage, tries to refuel the internal
+   generator (if it was assembled with a generator upgrade), and goes home to
+   recharge the tool and drop the loot into the chest.
+6. If the robot is built with a crafting upgrade, it packs some items into blocks
+   (e.g., redstone, diamonds).
+7. If the robot has a cunkloader upgrade, it's turned on when the robot starts
+   mining, and turned off when the robot is done.
+8. And, finally, if there's a linked card installed, the robot sends status
+   messages if:
+   * No chest was found.
+   * The chest is full.
+   * The block robot tries to mine is indestructable.
+   * The program finishes.
 
 ## Links
 * [The topic on the forums](http://computercraft.ru/topic/1510-)

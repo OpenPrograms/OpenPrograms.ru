@@ -1,14 +1,15 @@
 # libvector
-
-This library provides mathematical vectors with unlimited amount of dimensions.
+This library provides vectors with unlimited amount of dimensions.
 
 ## Authors
 * Ktlo
 
 ## Description
-The library returns the function that's called like this: `vector(x: number, y: number, z: number, ...)`.
+The library returns a function, which you should call to construct a vector:
+`vector(x: number, y: number, z: number, ...)`.
 
-A vector stores dimensions (and corresponding values) in a table. Each vector also has the `n` field, the amount of dimensions.
+The vector stores dimensions (and corresponding values) in a table.
+Each vector also has the `n` field, the amount of dimensions.
 
 ```lua
 local vector = require("vector")
@@ -17,7 +18,7 @@ print(a.n)
 --> 4
 ```
 
-All methods create a new vector instead of overriding the old one.
+All methods create a new vector instead of modifying the old one.
 
 ### Arithmetic operations
 ```lua
@@ -43,23 +44,25 @@ print(a * b)  -- cross product
 print(a == b)
 --> false
 
-print(#a, #b)  -- vector lengths
+print(#a, #b)  -- vector magnitude
 --> 13.038404810405 96.943282387177
 ```
 
 ### Methods
-* `vector:tostring([precision: number])` — the same as `tostring(vector)`, but also accepts the optional decimal precision (3 by default).
-* `vector:add(vector2: table): table` — the same as `vector + vector2`.
-* `vector:sub(vector2: table): table` — the same as `vector - vector2`.
-* `vector:mul(vector2: table): table` — the same as `vector * vector2`.
-* `vector:div(number: number): table` — the same as `vector / number`.
-* `vector:len(): number` — the same as `#vector`.
-* `vector:dot(vector2: table): number` — the dot product.
-* `vector:cross(vector2: table): table` — the cross product.
-* `vector:normalize(): table` — returns the normalized vector.
-* `vector:angle(vector2: table): number` — returns the angle between vectors (in radians).
+* `vector:tostring([precision: number])` — the same as `tostring(vector)`,
+  but also accepts the optional decimal precision (3 by default).
+* `vector:add(vector2: table): table` — `vector + vector2`.
+* `vector:sub(vector2: table): table` — `vector - vector2`.
+* `vector:mul(vector2: table): table` — `vector * vector2`.
+* `vector:div(number: number): table` — `vector / number`.
+* `vector:len(): number` — `#vector`.
+* `vector:dot(vector2: table): number` — dot product.
+* `vector:cross(vector2: table): table` — cross product.
+* `vector:normalize(): table` — returns the unit vector.
+* `vector:angle(vector2: table): number` — returns the angle between vectors
+  (in radians).
 * `vector:round(): table` — rounds the vector.
-* `vector:eq(vector2: table): boolean` — the same as `vector == vector2`.
+* `vector:eq(vector2: table): boolean` — `vector == vector2`.
 
 ## Links
 * [**Pastebin**](http://pastebin.com/mdfDvmps)

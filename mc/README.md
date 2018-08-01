@@ -1,7 +1,7 @@
 # Midday Commander
 *A file manager utility for OpenComputers.*
 
-For those who are not experienced with command-line interfaces, Midday Commander, a (or even the?) file manager was created.
+Made for those who are not experienced with command-line interfaces.
 
 ## Developers
 * Zer0Galaxy (aka Dimus) — the computercraft version of the program.
@@ -14,15 +14,23 @@ The programs supports any screens with any color depth or resolution.
 ![Screenshot 1](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-02123500-1459869189.png)
 ![Screenshot 2](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-87499400-1459869194.png)
 
-It even can be run on robots.
+It can be even run on robots.
 
-The basis of the GUI is a well-known Linux program, Midnight Commander, and, of course, Norton Commander.
+The GUI was inspired by a well-known Linux program, Midnight Commander, and, of course, Norton Commander.
 
-The GUI of the program has two panels: left and right ones. Each one lists files and directories that are stored on the computer's HDDs or floppies. The directories have `/` at the end of their's names, and are listed at the top of the lists.
+The program GUI has two panels, to the left and to the right.
+Each one lists files and directories stored on the computer's HDDs or floppies.
+The directories have `/` at the end of their names, and are displayed on the top
+of the lists.
 
-Below, there's a command prompt, and the list of the actions that can be invoked by pressing a corresponding functional (`Fx`) key.
+Below it is a command prompt, and a list of the actions invoked by pressing
+a corresponding functional (`Fn`) key.
 
-Use arrow keys to navigate through the files, and pressing the `Tab` key moves the focus to another panel. The `Enter` key is used to run a program, or go to directory. To run a program, and pass some arguments, hold `Ctrl`, and press `Enter`. The name of program will be copied to the command prompt. Type the arguments, and press `Enter`.
+Use arrow keys to navigate through the files, and pressing the `Tab` key moves
+the focus to another panel. The `Enter` key is used to run a program or go to
+a directory. To run a program and pass it arguments, hold `Ctrl` and press
+`Enter`. The name of program will be pasted to the command prompt.
+Type the arguments, and press `Enter`.
 
 Also, you can press `Alt` + `Enter` to hide MC.
 
@@ -36,7 +44,8 @@ Also, you can press `Alt` + `Enter` to hide MC.
 `Shift` + `F4` — create a new file.
 ![Screenshot 4: The "Create new file" dialog](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-43233500-1459869281.png)
 
-`F5` — copy a selected file to the another panel's current directory. You can copy under another name if you want so.
+`F5` — copy a selected file to the another panel's current directory. You can
+copy under another name if you want so.
 ![Screenshot 5: The "Copy the file" dialog](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-47155500-1459869311.png)
 
 `F6` — move a selected file.
@@ -52,11 +61,13 @@ You can use `?` and `*` masks.
 * `?` means "any character".
 * `*` means "0 or more characters"
 
-For example, to search for all files that start with `m`, you can use the `m*` pattern.
+For example, to search for all files that start with `m`, you can use the `m*`
+pattern.
 
-![Screenshot 8: The pattern search demonstration](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-27811400-1459869378.png)
+![Screenshot 8: The pattern search](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-27811400-1459869378.png)
 
-`F8` — remove a file or directory. You'll be asked for a confirmation before removing. Use the `Tab` key to select the `No` button.
+`F8` — remove a file or directory. You'll be asked for confirmation before
+removing. Use the `Tab` key to select the `No` button.
 ![Screenshot 9: The "Remove the file" dialog](http://computercraft.ru/uploads/monthly_04_2016/post-7-0-34415400-1459869339.png)
 
 `F10` — exit.

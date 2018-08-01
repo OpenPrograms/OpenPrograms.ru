@@ -13,16 +13,18 @@
 ## Description
 This program draws an image, raytracing the terrain in front of the camera.
 
-Entities can't be seen, that's the limitation of the camera.
+Entities aren't rendered. That's the limitation of the camera.
 
-Depending on the screen and graphics card tiers, you should launch the program differently:
+Depending on the screen and graphics card tiers, you should launch the program
+differently:
 
 * T3: `camera 0.041`
 * T2: `camera 0.085`
 
-As you might guess, the bigger the number, the more detailed the resulting image will be.
+The bigger the number is, the more detailed the resulting image will be.
 
-You can also provide `up` or `down` as the second argument if you're using the robot with the camera upgrade.
+You can also provide `up` or `down` as the second argument if you're using a
+robot with the camera upgrade.
 
 ### Controls
 * `Z` — zoom `+`.

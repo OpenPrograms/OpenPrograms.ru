@@ -1,5 +1,5 @@
 # libqr
-*QR-code generator.*
+A *QR-code generator.*
 
 ## Developers
 * 1Ridav
@@ -7,8 +7,9 @@
 ## Description
 
 ### API
-* `qr.encode(data: string): table` — generates a QR-code that decodes to the given data. The return value is a table of `1` (black) and `0` (white)
-* `qt.printHalf(data: table)` — draws the QR code on the screen.
+* `qr.encode(data: string): table` — generates a QR-code that decodes to the
+  given data. The return value is a matrix of `1`s (black) and `0`s (white).
+* `qt.printHalf(data: table)` — draws a QR code on the screen.
 
 ### Example
 ```lua

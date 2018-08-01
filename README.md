@@ -1,26 +1,26 @@
 # OpenPrograms.ru
 
-This is a place for some programs that were posted on [the Russian forums](http://computercraft.ru), put here so they can be easily downloaded with `oppm`.
+This is a place for some programs that were posted on
+[the Russian forums](http://computercraft.ru), and put here so that they can be
+easily downloaded with `oppm`.
 
-Go to the programs' directories to get the docs and the information on what the programs are, and how to use them.
+Go to the program directories to get the docs.
 
 * `holo-editor` — Hologram Editor and Viewer.
-* `lava-runner` — Lava Runner, the game.
+* `lava-runner` — Lava Runner, a game.
 * `libforms` — a lightweight GUI library.
 * `mc` — a file commander.
-* `obj` — 3D-model drawing library for OpenGlasses.
-* `geomine` — a miner program that uses the Geolyzer to effectively mine the ores.
-* `geoglasses` — a program that searches for ores and highlights them on glasses from the OpenGlasses mod.
-* `camera` — a program that can draw what the Computronics' camera sees.
+* `obj` — a 3D model render library for OpenGlasses.
+* `geomine` — a miner program that uses a geolyzer to mine the ores efficiently.
+* `geoglasses` — a program that searches for ores and highlights them on glasses
+  from the OpenGlasses mod.
+* `camera` — a program that draws what the Computronics' camera sees.
 * `libthread` — an easy-to-use multithreading library.
 * `libqr` — a QR code generator library.
 * `libvector` — a vector library.
 
-
-By the way, there isn't, wasn't, and won't be any programs included in "MineOS", including the "OS" itself. Not only it highly depends on the Russian language (and it's almost impossible to translate the whole project), it also contains a lot of completely useless fool language comments, it's maintained VERY poorly (commit descriptions are not descriptive at all, at the very least), the project doesn't comply with my rules I use to filter the programs, and it's impossible to always stay up-to-date with the upstream.
-
-Yes, all of the programs above are **neither** included in, **nor** written by the author of MineOS. And there's no Russian/English hellish mix that you could see in the "OS".
-
-If you experience any bugs with the programs or have a feature request for them, feel free to either leave an issue at the GitHub issue tracker, or poke me on EsperNet. I'll contact authors of the programs and try to get a response from them ASAP.
+If you experience any bugs with the programs or want to request a feature,
+feel free to leave an issue on the issue tracker, or poke me on EsperNet.
+I'll contact authors of the programs and try to get a response from them ASAP.
 
 I also try to keep the programs up-to-date with the original version.
