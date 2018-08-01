@@ -10,6 +10,7 @@ local shell = require('shell')
 local com = require('component')
 local bit32 = require('bit32')
 local gpu = com.gpu
+local projectorPicked
 
 --     Colors     --
 local color = {
@@ -77,10 +78,11 @@ local loc = {
 
 -- Try to load a component safely
 local function trytofind(name)
-  if com.isAvailable(name) then
-    return com.getPrimary(name)
+  name = tostring(name)
+  if com.isAvailable(holoName) then
+    return com.getPrimary(holoName)
   else
-    return nil
+    return com.proxy(tostring(name))
   end
 end
 
@@ -89,6 +91,7 @@ local OLDWIDTH, OLDHEIGHT = gpu.getResolution()
 local WIDTH, HEIGHT = gpu.maxResolution()
 local FULLSIZE = true
 local HOLOW, HOLOH = 48, 32        -- hologram size
+local LAYERSIZE = 48 * 48          -- layer size for indexing
 local MENUX = HOLOW*2+5            -- right panel offset
 local BUTTONW = 12                 -- standart button width
 local GRIDX, GRIDY = 3, 2          -- grid offset
@@ -133,17 +136,19 @@ end
 
 -- ========================================= H O L O G R A P H I C S ========================================= --
 local holo = {}
+
+local function getIndex(x, y, z)
+  return LAYERSIZE * (y - 1) + (x + (z - 1) * HOLOW)
+end
 local function set(x, y, z, value)
-  if holo[x] == nil then holo[x] = {} end
-  if holo[x][y] == nil then holo[x][y] = {} end
-  holo[x][y][z] = value
+  local index = getIndex(x, y, z)
+  if holo[index] ~= nil or (value ~= nil and value ~= 0) then
+    holo[index] = value
+  end
 end
 local function get(x, y, z)
-  if holo[x] ~= nil and holo[x][y] ~= nil and holo[x][y][z] ~= nil then
-    return holo[x][y][z]
-  else
-    return 0
-  end
+  local index = getIndex(x, y, z)
+  return holo[index] or 0
 end
 
 local writer = {}
@@ -341,10 +346,13 @@ end
 -- ============================================== B U T T O N S ============================================== --
 local Button = {}
 Button.__index = Button
-function Button.new(func, x, y, text, fore, back, width, nu)
+function Button.new(func, x, y, text, fore, back, width, nu, noPadding)
   self = setmetatable({}, Button)
-
-  self.form = '[ '
+  if noPadding then
+    self.form = '['
+  else
+    self.form = '[ '
+  end
   if width == nil then width = 0
     else width = (width - unicode.len(text))-4 end
   for i=1, math.floor(width/2) do
@@ -354,7 +362,11 @@ function Button.new(func, x, y, text, fore, back, width, nu)
   for i=1, math.ceil(width/2) do
     self.form = self.form.. ' '
   end
-  self.form = self.form..' ]'
+  if noPadding then
+    self.form = self.form..']'
+  else
+    self.form = self.form..' ]'
+  end
 
   self.func = func
 
@@ -390,8 +402,8 @@ function Button:click(x, y)
   return false
 end
 
-local function buttonNew(buttons, func, x, y, text, fore, back, width, notupdate)
-  local button = Button.new(func, x, y, text, fore, back, width, notupdate)
+local function buttonNew(buttons, func, x, y, text, fore, back, width, notupdate, noPadding)
+  local button = Button.new(func, x, y, text, fore, back, width, notupdate, noPadding)
   table.insert(buttons, button)
   return button
 end
@@ -668,7 +680,7 @@ local function mainScreen()
   foreground(color.info)
   background(color.gray)
   if FULLSIZE then
-    gpu.set(MENUX+3, HEIGHT-11, "   Hologram Editor  v0.7.1   ")
+    gpu.set(MENUX+3, HEIGHT-11, "   Hologram Editor  v0.7.2   ")
     foreground(color.fore)
     gpu.set(MENUX+3, HEIGHT-10, "            * * *            ")
     gpu.set(MENUX+3, HEIGHT-8,  "  Totoro  (aka MoonlightOwl) ")
@@ -914,7 +926,7 @@ local function setSideView() setView(SIDE) end
 
 local function drawHologram()
   -- check for a projector availability
-  local projector = trytofind('hologram')
+  local projector = projectorPicked or trytofind('hologram')
   if projector ~= nil then
     local depth = projector.maxDepth()
     -- clean him up
@@ -1008,7 +1020,32 @@ local function loadHologram()
     end
   end
 end
-
+local function copyLayer(dst)
+  for x = 1, view.width do
+    for y = 1, view.height do
+      local vsx, vsy, vsz = project(x, y, layer, view)
+      local vdx, vdy, vdz = project(x, y, dst, view)
+      local sv = get(vsx,vsy,vsz)
+      local dv = get(vdx,vdy,vdz)
+      if dv == 0 then
+        dv = sv
+      end
+      set(vdx,vdy,vdz,dv)
+    end
+  end
+end
+local function copyLayerNext()
+  if layer < view.depth then
+    copyLayer(layer+1)
+    nextLayer()
+  end
+end
+local function copyLayerPrev()
+  if layer > 1 then
+    copyLayer(layer-1)
+    prevLayer()
+  end
+end
 
 -- =========================================== M A I N   C Y C L E =========================================== --
 -- initialization
@@ -1017,7 +1054,7 @@ if HEIGHT < HOLOW/2 then
   error(loc.TOO_LOW_RESOLUTION_ERROR)
 elseif HEIGHT < HOLOW+2 then
   com.screen.setPrecise(true)
-  if not com.screen.isPrecise() then error(loc.TOO_LOW_SCREEN_TIER) end
+  if not com.screen.isPrecise() then error(loc.TOO_LOW_SCREEN_TIER_ERROR) end
   FULLSIZE = false
   MENUX = HOLOW + 2
   color.gray = color.lightgray
@@ -1053,8 +1090,10 @@ if FULLSIZE then
   buttonNew(buttons, prevGhost, MENUX+1, 24, loc.BELOW_BUTTON, color.fore, color.info, 6)
   buttonNew(buttons, nextGhost, MENUX+10, 24, loc.ABOVE_BUTTON, color.fore, color.info, 6)
 
-  buttonNew(buttons, clearLayer, MENUX+1, 26, loc.CLEAR_BUTTON, color.fore, color.info, BUTTONW)
-  buttonNew(buttons, fillLayer, MENUX+2+BUTTONW, 26, loc.FILL_BUTTON, color.fore, color.info, BUTTONW)
+  buttonNew(buttons, clearLayer, MENUX+1, 26, loc.CLEAR_BUTTON, color.fore, color.info, 0,nil,true)
+  buttonNew(buttons, fillLayer, MENUX+12, 26, loc.FILL_BUTTON, color.fore, color.info, 0,nil,true)
+  buttonNew(buttons, copyLayerNext, MENUX+21, 26, "+", color.back, color.gold,nil,nil,true)
+  buttonNew(buttons, copyLayerPrev, MENUX+25, 26, "-", color.back, color.gold,nil,nil,true)
 
   buttonNew(buttons, drawHologram, MENUX+9, 30, loc.TO_PROJECTOR, color.back, color.gold, 16)
   buttonNew(buttons, saveHologram, MENUX+1, 33, loc.SAVE_BUTTON, color.fore, color.help, BUTTONW)
@@ -1065,9 +1104,12 @@ else
   buttonNew(buttons, drawLayer, MENUX+9, 6, loc.REFRESH_BUTTON, color.back, color.gold, BUTTONW)
   buttonNew(buttons, prevLayer, MENUX+1, 9, '-', color.fore, color.info, 5)
   buttonNew(buttons, nextLayer, MENUX+7, 9, '+', color.fore, color.info, 5)
-  buttonNew(buttons, setTopView, MENUX+1, 11, loc.TOP_BUTTON, color.fore, color.info, 8)
-  buttonNew(buttons, setFrontView, MENUX+10, 12, loc.FRONT_BUTTON, color.fore, color.info, 8)
-  buttonNew(buttons, setSideView, MENUX+20, 13, loc.SIDE_BUTTON, color.fore, color.info, 8)
+  buttonNew(buttons, setTopView, MENUX+1, 11, loc.TOP_BUTTON, color.fore, color.info, 0, nil, true)
+  buttonNew(buttons, setFrontView, MENUX+10, 11, loc.FRONT_BUTTON, color.fore, color.info, 0, nil, true)
+  buttonNew(buttons, setSideView, MENUX+20, 11, loc.SIDE_BUTTON, color.fore, color.info, 0, nil, true)
+  buttonNew(buttons, copyLayerNext, MENUX+1, 12, "+", color.back, color.gold,nil,nil,true)
+  buttonNew(buttons, copyLayerPrev, MENUX+5, 12, "-", color.back, color.gold,nil,nil,true)
+
 
   buttonNew(buttons, clearLayer, MENUX+1, 15, loc.CLEAR_BUTTON, color.fore, color.info, BUTTONW)
   buttonNew(buttons, fillLayer, MENUX+14, 15, loc.FILL_BUTTON, color.fore, color.info, BUTTONW)
@@ -1100,6 +1142,13 @@ else
   tb_blue = textboxNew(textboxes, isNumber, changeBlue, MENUX+23, 5, 6, '0')
   tb_layer = textboxNew(textboxes, correctLayer, setLayer, MENUX+13, 9, WIDTH-MENUX-14, '1')
   tb_file = textboxNew(textboxes, function() return true end, setFilename, MENUX+1, 19, WIDTH-MENUX-2, '', loc.FILE_REQUEST)
+end
+
+local args = shell.parse(...)
+
+for _, v in ipairs(args) do
+  projectorPicked = trytofind(v)
+  if projectorPicked then break end
 end
 
 mainScreen()
