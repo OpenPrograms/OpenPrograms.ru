@@ -37,8 +37,8 @@ local function compass()
   while not d do
     for c = 0, 3 do
       R.swing(3)
-      if g.scan(tCmps[c][1], tCmps[c][2], 0, 1, 1, 1)[1] == 0 and R.place(3) then
-        if g.scan(tCmps[c][1], tCmps[c][2], 0, 1, 1, 1)[1] > 0 then
+      if g.scan(tCmps[c][1], tCmps[c][2], 0, 1, 1, 1, true)[1] == 0 and R.place(3) then
+        if g.scan(tCmps[c][1], tCmps[c][2], 0, 1, 1, 1, true)[1] > 0 then
           d = c
           return
         end
@@ -179,7 +179,7 @@ local function gotot(xt, yt, zt)
 end
 
 local function scan(sy)
-  tTest = g.scan(-x1, -z1, sy, 8, 8, 1)
+  tTest = g.scan(-x1, -z1, sy, 8, 8, 1, true)
   p = 1
   for sz = -z1, 7-z1 do
     for sx = -x1, 7-x1 do
